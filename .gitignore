@@ -26,3 +26,7 @@ obsidianvault/
 
 # Claude Code local state (not needed by others)
 .claude/settings.local.json
+
+# Resume files (contain personal contact info)
+ats_optimized_resume.md
+ats_optimized_resume.pdf
