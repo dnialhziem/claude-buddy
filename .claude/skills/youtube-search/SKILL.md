@@ -2,6 +2,7 @@
 name: youtube-search
 description: Use when searching YouTube for videos on a topic. Returns structured video results including titles, URLs, duration, and descriptions.
 argument-hint: [search query]
+disable-model-invocation: true
 ---
 
 ## What This Skill Does

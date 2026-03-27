@@ -92,7 +92,7 @@ Wait for the user's decision before moving forward.
 
 ---
 
-## Step 3: Sync Skills to Vault
+## Step 4: Sync Skills to Vault
 
 Copy updated skill files from PYTHON-BUDDY to the Obsidian vault:
 
@@ -105,7 +105,7 @@ Tell the user: "Skills synced to vault." (This is always safe — vault skills a
 
 ---
 
-## Step 4: Check for New Projects
+## Step 5: Check for New Projects
 
 Ask the user directly: "Are you publishing a new project alongside this update? (class assignment, hackathon, personal project)"
 
@@ -131,7 +131,7 @@ If no, skip this step.
 
 ---
 
-## Step 5: Draft the Commit Message
+## Step 6: Draft the Commit Message
 
 Write a commit message in two parts:
 
@@ -152,7 +152,7 @@ Show the draft to the user and ask: "Does this commit message look right?"
 
 ---
 
-## Step 6: Commit and Push
+## Step 7: Commit and Push
 
 Once the user confirms the message:
 
@@ -164,7 +164,7 @@ git push
 
 ---
 
-## Step 7: Confirm
+## Step 8: Confirm
 
 Tell the user:
 ```

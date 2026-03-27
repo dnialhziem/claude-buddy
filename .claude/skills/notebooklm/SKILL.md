@@ -2,6 +2,7 @@
 name: notebooklm
 description: Use when sending sources to NotebookLM for analysis, creating a notebook, adding YouTube URLs or text, or generating deliverables like summaries, study guides, mind maps, or infographics.
 argument-hint: [source URL or topic]
+disable-model-invocation: true
 ---
 
 ## What This Skill Does
