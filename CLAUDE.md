@@ -10,6 +10,7 @@ This folder contains Claude Code skills used across all projects:
 - `/python-buddy` — debug Python code with tiered solutions
 - `/brainstorm` — interactive idea generation sessions
 - `/skill-builder` — create and audit new skills
+- `/publish` — commit, push, sync vault skills, and keep GitHub clean after breakthroughs or new projects
 
 All session outputs are saved to the Obsidian vault at:
 `C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\`
@@ -23,6 +24,7 @@ All session outputs are saved to the Obsidian vault at:
   python-buddy/     — Python debugger (SKILL.md + error-catalogue.md + tier-guide.md)
   brainstorm/       — Brainstorm session runner (SKILL.md)
   skill-builder/    — Skill creator and auditor (SKILL.md + reference.md)
+  publish/          — GitHub publisher (SKILL.md)
 ```
 
 ---
