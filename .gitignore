@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets / credentials
+*.key
+*.pem
+secrets.json
+credentials.json
+
+# Playwright / browser automation cache
+.playwright/
+
+# Personal vault (kept separate — not part of this repo)
+obsidianvault/
+
+# Claude Code local state (not needed by others)
+.claude/settings.local.json
