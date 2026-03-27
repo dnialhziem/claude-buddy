@@ -1,7 +1,7 @@
 ---
 name: publish
 description: Use when the user wants to commit, push, update GitHub, publish a new project, ship a skill update, or sync the repo after a breakthrough or milestone.
-argument-hint: [optional: what changed or project name]
+argument-hint: "optional: what changed or project name"
 disable-model-invocation: true
 ---
 
@@ -21,7 +21,9 @@ git status
 git diff --stat
 ```
 
-Present a plain-English summary of what's changed:
+If the output shows "nothing to commit, working tree clean" — tell the user: "Nothing to publish — your repo is already up to date." Then stop.
+
+Otherwise, present a plain-English summary of what's changed:
 - New files added
 - Files modified
 - Files deleted
@@ -31,7 +33,39 @@ Ask the user: "Is this everything you want to publish, or are there other files 
 
 ---
 
-## Step 2: Downgrade Check
+## Step 2: Sensitive Info Scan
+
+Before anything is staged, scan all changed and untracked files for content that should NOT be on a public GitHub repo:
+
+**Flag immediately if found:**
+- API keys, tokens, passwords, or secrets (look for patterns like `sk-`, `Bearer `, `API_KEY=`, `password=`, `token=`)
+- Personal details: full name + student ID together, home address, phone number, bank/payment info
+- University login credentials or student portal URLs with embedded session tokens
+- Hardcoded file paths that reveal personal folder structure (e.g. `C:\Users\dnialhziem\...`) inside code files — note: this is fine in SKILL.md documentation, but not in Python scripts or config files
+- `.env` files or any file named `secrets`, `credentials`, `config.local`
+
+**If sensitive info is detected, stop and report:**
+```
+STOP — Sensitive information detected before publishing:
+
+File: [filename]
+Line: [line number]
+Issue: [what was found — e.g. "API key pattern detected"]
+Risk: [what happens if this is published publicly]
+
+Options:
+1. Remove or mask the sensitive info, then re-run /publish
+2. Add the file to .gitignore so it's never tracked
+3. Skip this file from the current commit
+```
+
+Do NOT proceed until the user resolves all flagged issues.
+
+If nothing is found, continue to Step 3.
+
+---
+
+## Step 3: Downgrade Check
 
 Before proceeding, scan for any changes that could reduce the repo's quality:
 - Deleted or shortened README sections
@@ -60,28 +94,29 @@ Wait for the user's decision before moving forward.
 
 ## Step 3: Sync Skills to Vault
 
-Copy any updated skill files from PYTHON-BUDDY to the Obsidian vault:
+Copy updated skill files from PYTHON-BUDDY to the Obsidian vault:
 
 ```bash
 cp -r "C:/Users/dnialhziem/OneDrive - The University of Melbourne/unimelb/year1/PYTHON-BUDDY/.claude/skills/." \
       "C:/Users/dnialhziem/OneDrive/Documents/Obsidian/obsidianvault/.claude/skills/"
 ```
 
-Tell the user: "Skills synced to vault."
+Tell the user: "Skills synced to vault." (This is always safe — vault skills are copies, not originals.)
 
 ---
 
 ## Step 4: Check for New Projects
 
-Check if there are new or updated project files in:
-- `C:/Users/dnialhziem/OneDrive - The University of Melbourne/unimelb/year1/PYTHON-BUDDY/`
-- `C:/Users/dnialhziem/OneDrive - The University of Melbourne/unimelb/year1/comp 10001/projects/`
+Ask the user directly: "Are you publishing a new project alongside this update? (class assignment, hackathon, personal project)"
 
-If a new project is detected, ask:
+If yes, ask:
 1. "What is this project? (one sentence — what it does and why you built it)"
 2. "Is this a class project, hackathon, or personal project?"
+3. "What tools or languages did you use?"
 
 Use the answers to add a new entry to the README under a `## Projects` section (create it if it doesn't exist yet).
+
+If no, skip this step.
 
 **Project entry format:**
 ```markdown
@@ -146,7 +181,7 @@ If skills were synced, confirm that too.
 
 - **Never push without showing what's being committed first** — always show git status summary in Step 1
 - **Never silently downgrade** — any removal or reduction triggers Step 2 pros/cons check
-- **Never overwrite vault skills without confirming** — Step 3 is automatic but should be reported
+- **Vault sync is always safe** — vault skills are copies, originals live in PYTHON-BUDDY. Auto-sync is fine.
 - **Commit messages are for humans** — avoid jargon, write as if explaining to a recruiter
 - If `$ARGUMENTS` is provided, use it as context for the commit message draft
 - If the user is unsure what changed, run `git diff` and summarize it for them

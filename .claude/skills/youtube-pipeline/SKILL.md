@@ -5,6 +5,12 @@ argument-hint: [topic] [optional: deliverable type]
 disable-model-invocation: true
 ---
 
+## Credit
+
+Inspired by [Chase AI](https://www.youtube.com/@ChaseAI) — his Claude Code + NotebookLM pipeline workflow introduced this concept.
+
+---
+
 ## What This Skill Does
 
 Full YouTube research pipeline. Searches YouTube for videos on a topic, sends them to NotebookLM for AI analysis, returns structured insights, and saves everything to the Obsidian vault.

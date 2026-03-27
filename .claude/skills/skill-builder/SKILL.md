@@ -3,6 +3,12 @@ name: skill-builder
 description: Use when creating new skills, optimizing existing skills, or auditing skill quality. Guides skill development following Claude Code official best practices.
 ---
 
+## Credit
+
+Inspired by [Nate Herk](https://www.youtube.com/@nateherk) — his Claude Code skills tutorials introduced this workflow.
+
+---
+
 ## What This Skill Does
 
 Guides the creation and optimization of Claude Code skills using official best practices. Use this whenever:
