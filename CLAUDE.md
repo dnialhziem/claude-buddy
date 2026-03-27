@@ -11,6 +11,8 @@ This folder contains Claude Code skills used across all projects:
 - `/brainstorm` — interactive idea generation sessions
 - `/skill-builder` — create and audit new skills
 - `/publish` — commit, push, sync vault skills, and keep GitHub clean after breakthroughs or new projects
+- `/linkedin` — turn any project, commit, or cert into 3 natural LinkedIn post drafts using the Scroll-Stop framework
+- `/ats-resume` — generate or audit an ATS-optimised resume; outputs Markdown + PDF via weasyprint
 
 All session outputs are saved to the Obsidian vault at:
 `C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\`
@@ -25,6 +27,8 @@ All session outputs are saved to the Obsidian vault at:
   brainstorm/       — Brainstorm session runner (SKILL.md)
   skill-builder/    — Skill creator and auditor (SKILL.md + reference.md)
   publish/          — GitHub publisher (SKILL.md)
+  linkedin/         — LinkedIn post generator (SKILL.md)
+  ats-resume/       — ATS resume builder + PDF exporter (SKILL.md)
 ```
 
 ---
