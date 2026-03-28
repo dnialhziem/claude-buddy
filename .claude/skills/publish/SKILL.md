@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 One command to commit, push, and keep the GitHub repo clean and readable after a breakthrough, new project, or skill update. Writes commit messages and README updates that a non-technical reader (e.g. HR recruiter) can understand at a glance.
 
-Repo: `https://github.com/dnialhziem/claude-buddy`
+Repo: `https://github.com/<your-username>/claude-buddy`
 
 ---
 
@@ -41,7 +41,7 @@ Before anything is staged, scan all changed and untracked files for content that
 - API keys, tokens, passwords, or secrets (look for patterns like `sk-`, `Bearer `, `API_KEY=`, `password=`, `token=`)
 - Personal details: full name + student ID together, home address, phone number, bank/payment info
 - University login credentials or student portal URLs with embedded session tokens
-- Hardcoded file paths that reveal personal folder structure (e.g. `C:\Users\dnialhziem\...`) inside code files — note: this is fine in SKILL.md documentation, but not in Python scripts or config files
+- Hardcoded file paths that reveal personal folder structure (e.g. `C:\Users\<your-username>\...`) inside code files — note: this is fine in SKILL.md documentation, but not in Python scripts or config files
 - `.env` files or any file named `secrets`, `credentials`, `config.local`
 
 **If sensitive info is detected, stop and report:**
@@ -97,8 +97,8 @@ Wait for the user's decision before moving forward.
 Copy updated skill files from PYTHON-BUDDY to the Obsidian vault:
 
 ```bash
-cp -r "C:/Users/dnialhziem/OneDrive - The University of Melbourne/unimelb/year1/PYTHON-BUDDY/.claude/skills/." \
-      "C:/Users/dnialhziem/OneDrive/Documents/Obsidian/obsidianvault/.claude/skills/"
+cp -r "C:/Users/<your-username>/OneDrive - The University of Melbourne/unimelb/year1/PYTHON-BUDDY/.claude/skills/." \
+      "C:/Users/<your-username>/OneDrive/Documents/Obsidian/obsidianvault/.claude/skills/"
 ```
 
 Tell the user: "Skills synced to vault." (This is always safe — vault skills are copies, not originals.)
@@ -169,7 +169,7 @@ git push
 Tell the user:
 ```
 Published. View your repo at:
-https://github.com/dnialhziem/claude-buddy
+https://github.com/<your-username>/claude-buddy
 ```
 
 If the README was updated, mention which section changed.

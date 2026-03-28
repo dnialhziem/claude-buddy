@@ -15,7 +15,7 @@ This folder contains Claude Code skills used across all projects:
 - `/ats-resume` — generate or audit an ATS-optimised resume; outputs Markdown + PDF via weasyprint
 
 All session outputs are saved to the Obsidian vault at:
-`C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\`
+`C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\`
 
 ---
 
@@ -35,8 +35,8 @@ All session outputs are saved to the Obsidian vault at:
 
 ## Python Setup
 
-- Python 3.12: `C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe`
-- Python 3.14: `C:\Users\dnialhziem\AppData\Local\Python\bin\python.exe`
+- Python 3.12: `C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe`
+- Python 3.14: `C:\Users\<your-username>\AppData\Local\Python\bin\python.exe`
 - Use **3.12** for notebooklm-py (3.14 has compatibility issues)
 - Use **3.14** for everything else
 

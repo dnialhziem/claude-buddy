@@ -9,13 +9,13 @@ Runs an interactive brainstorming session on any topic. Asks clarifying question
 
 ## Supporting Files
 
-- Past session summaries are stored in `C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\brainstorm\`. Load any relevant ones before starting if the topic overlaps with a previous session.
+- Past session summaries are stored in `C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\brainstorm\`. Load any relevant ones before starting if the topic overlaps with a previous session.
 
 ## Execution Flow
 
 ### Step 1: Load Past Context
 
-Check `C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\brainstorm\` for any summary files. If there are past sessions related to the current topic, read them and use their insights to inform this session. Tell the user if you found relevant past sessions.
+Check `C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\brainstorm\` for any summary files. If there are past sessions related to the current topic, read them and use their insights to inform this session. Tell the user if you found relevant past sessions.
 
 ### Step 2: Ask What to Brainstorm
 
@@ -59,7 +59,7 @@ Keep iterating based on replies. Each round should refine, not just repeat. Buil
 
 ### Step 5: Save Session Summary
 
-When the user is done (they say something like "that's enough", "wrap it up", "save this"), save a summary to `C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\brainstorm\[topic-slug]-[date].md` using the template below.
+When the user is done (they say something like "that's enough", "wrap it up", "save this"), save a summary to `C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\brainstorm\[topic-slug]-[date].md` using the template below.
 
 Use today's date in YYYY-MM-DD format for the filename. Slugify the topic (lowercase, hyphens, no special chars).
 

@@ -131,7 +131,7 @@ Iterate until the user is happy with one.
 ## Step 7: Save to Vault
 
 Save all 3 drafts to:
-`C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\linkedin\[topic-slug]-[date].md`
+`C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\linkedin\[topic-slug]-[date].md`
 
 Use this Obsidian frontmatter so notes are searchable by date, tag, and type:
 

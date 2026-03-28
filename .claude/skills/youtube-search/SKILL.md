@@ -11,7 +11,7 @@ Searches YouTube using yt-dlp and returns structured results for a given query. 
 
 ## Python Executable
 
-Always use: `C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe`
+Always use: `C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe`
 
 ## Execution Flow
 
@@ -25,7 +25,7 @@ If not, ask the user: "What do you want to search for on YouTube?"
 Execute this command (replace QUERY with the actual search terms):
 
 ```bash
-C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe -m yt_dlp "ytsearch10:QUERY" --dump-json --flat-playlist --no-warnings 2>/dev/null
+C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe -m yt_dlp "ytsearch10:QUERY" --dump-json --flat-playlist --no-warnings 2>/dev/null
 ```
 
 This returns up to 10 results as JSON lines.

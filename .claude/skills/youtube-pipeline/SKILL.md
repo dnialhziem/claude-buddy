@@ -19,7 +19,7 @@ Combines the `youtube-search` and `notebooklm` skills into one command.
 
 ## Python Executable
 
-Always use: `C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe`
+Always use: `C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe`
 
 ## Inputs
 
@@ -81,7 +81,7 @@ Inform the user:
 ### Step 6: Save to Vault
 
 Save the full output to:
-`C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\videos\[topic-slug]-[date].md`
+`C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\videos\[topic-slug]-[date].md`
 
 Include: sources used, full analysis, deliverable output, key takeaways.
 

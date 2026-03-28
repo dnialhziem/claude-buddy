@@ -20,7 +20,7 @@ When invoked to analyze Python code, execute the following sequence strictly:
    - **Easy:** Prioritizes readability. Foundational loops, basic conditionals, native structures.
    - **Moderate:** Idiomatic Python. List/dict comprehensions, built-in functions, standard methods.
    - **Advanced:** Prioritizes execution speed and memory efficiency. Generators, `collections`, `itertools`, `functools`.
-4. **Save Session:** After providing solutions, save a session note to `C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\python-sessions\[topic-slug]-[date].md` using the template below.
+4. **Save Session:** After providing solutions, save a session note to `C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\python-sessions\[topic-slug]-[date].md` using the template below.
 
 ## Session Save Template
 

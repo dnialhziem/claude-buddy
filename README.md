@@ -73,7 +73,7 @@ Session outputs, research notes, and brainstorm summaries are saved to a separat
 
 ### Install
 ```bash
-git clone https://github.com/dnialhziem/claude-buddy.git
+git clone https://github.com/<your-username>/claude-buddy.git
 cd claude-buddy
 ```
 

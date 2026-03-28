@@ -11,8 +11,8 @@ Controls NotebookLM via CLI to create notebooks, add sources (YouTube URLs, text
 
 ## Python Executable
 
-Always use: `C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe`
-Base command: `C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm`
+Always use: `C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe`
+Base command: `C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm`
 
 ## Available Commands
 
@@ -47,7 +47,7 @@ python -m notebooklm --help
 ### Step 1: Create a Notebook
 
 ```bash
-C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm create --title "[topic]-[date]"
+C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm create --title "[topic]-[date]"
 ```
 
 Note the notebook ID returned.
@@ -56,7 +56,7 @@ Note the notebook ID returned.
 
 For each YouTube URL provided:
 ```bash
-C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm add-source NOTEBOOK_ID --url "URL"
+C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm add-source NOTEBOOK_ID --url "URL"
 ```
 
 Wait for each source to be processed before adding the next.
@@ -65,7 +65,7 @@ Wait for each source to be processed before adding the next.
 
 Ask the notebook a specific analysis question:
 ```bash
-C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm chat NOTEBOOK_ID "ANALYSIS_QUESTION"
+C:\Users\<your-username>\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm chat NOTEBOOK_ID "ANALYSIS_QUESTION"
 ```
 
 ### Step 4: Generate Deliverable (if requested)
@@ -78,7 +78,7 @@ If the user asked for a specific deliverable:
 ### Step 5: Save Output to Vault
 
 Save all analysis output to:
-`C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\videos\[topic-slug]-[date].md`
+`C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\videos\[topic-slug]-[date].md`
 
 Use this template:
 ```markdown
