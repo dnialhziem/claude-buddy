@@ -8,11 +8,11 @@ This is the Python learning and skill-building workspace for Year 1.
 
 This folder contains Claude Code skills used across all projects:
 - `/python-buddy` — debug Python code with tiered solutions
-- `/brainstorm` — interactive idea generation sessions
 - `/skill-builder` — create and audit new skills
 - `/publish` — commit, push, sync vault skills, and keep GitHub clean after breakthroughs or new projects
 - `/linkedin` — turn any project, commit, or cert into 3 natural LinkedIn post drafts using the Scroll-Stop framework
 - `/ats-resume` — generate or audit an ATS-optimised resume; outputs Markdown + PDF via weasyprint
+- `/learn` — unified learning & research skill: brainstorm ideas, study files (PDF/PPTX/DOCX), research YouTube topics, or learn from URLs — all routes through YouTube search → NotebookLM → Obsidian vault with Mermaid mindmap
 
 All session outputs are saved to the Obsidian vault at:
 `C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\`
@@ -24,11 +24,12 @@ All session outputs are saved to the Obsidian vault at:
 ```
 .claude/skills/
   python-buddy/     — Python debugger (SKILL.md + error-catalogue.md + tier-guide.md)
-  brainstorm/       — Brainstorm session runner (SKILL.md)
   skill-builder/    — Skill creator and auditor (SKILL.md + reference.md)
   publish/          — GitHub publisher (SKILL.md)
   linkedin/         — LinkedIn post generator (SKILL.md)
   ats-resume/       — ATS resume builder + PDF exporter (SKILL.md)
+  learn/            — Unified learning: brainstorm + YouTube + files + NotebookLM (SKILL.md + watcher.md)
+  notebooklm/       — NotebookLM CLI sub-skill (SKILL.md)
 ```
 
 ---
@@ -39,6 +40,14 @@ All session outputs are saved to the Obsidian vault at:
 - Python 3.14: `C:\Users\<your-username>\AppData\Local\Python\bin\python.exe`
 - Use **3.12** for notebooklm-py (3.14 has compatibility issues)
 - Use **3.14** for everything else
+
+---
+
+## Session Efficiency
+
+- After completing any major task (skill run, file saved, brainstorm wrapped up, resume compiled), suggest a `/compact` checkpoint to the user
+- Say: "Good stopping point — want to `/compact` before starting the next task?"
+- Do NOT suggest `/compact` mid-task or mid-skill — only at natural boundaries
 
 ---
 

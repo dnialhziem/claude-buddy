@@ -17,6 +17,18 @@ desktop.ini
 *.pem
 secrets.json
 credentials.json
+token.json
+email-butler/corrections.csv
+email-butler/receipts.csv
+email-butler/briefing-log.txt
+email-butler/run-briefing.bat
+email-butler/prompts/examples.json
+
+# Local scratch work
+ollama_test/
+
+# Scripts with hardcoded paths
+scripts/learn-watcher.py
 
 # Playwright / browser automation cache
 .playwright/
@@ -28,5 +40,4 @@ obsidianvault/
 .claude/settings.local.json
 
 # Resume files (contain personal contact info)
-ats_optimized_resume.md
-ats_optimized_resume.pdf
+resume/
