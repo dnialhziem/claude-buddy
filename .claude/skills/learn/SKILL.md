@@ -160,7 +160,7 @@ Save extracted text as a temp `.txt` for NotebookLM upload.
 **Always runs**, regardless of mode. Infer topic from content (first heading, filename, or user input).
 
 ```bash
-C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe -m yt_dlp "ytsearch5:QUERY" --dump-json --flat-playlist --no-warnings 2>/dev/null
+C:\Users\dnialhziem\AppData\Local\Python\bin\python.exe -m yt_dlp "ytsearch5:QUERY" --dump-json --flat-playlist --no-warnings 2>/dev/null
 ```
 
 Parse each result for: `title`, `webpage_url`, `duration_string`, `view_count`, `uploader`, `description` (first 200 chars).
@@ -230,6 +230,9 @@ If not authenticated, stop: "Run `%PY12% -m notebooklm login` first, then retry.
 If `--deliverable` was specified:
 - `study-guide`: `%PY12% -m notebooklm study-guide NOTEBOOK_ID`
 - `audio-overview`: `%PY12% -m notebooklm audio-overview NOTEBOOK_ID` (~5–10 min)
+- `briefing`: `%PY12% -m notebooklm chat NOTEBOOK_ID "Give a concise executive briefing on all sources"`
+- `faq`: `%PY12% -m notebooklm chat NOTEBOOK_ID "Generate a FAQ with 10 questions and answers from the sources"`
+- `flashcards`: `%PY12% -m notebooklm chat NOTEBOOK_ID "Generate 15 flashcard Q&A pairs for spaced repetition"`
 - Other types: use `%PY12% -m notebooklm chat NOTEBOOK_ID "[request]"`
 
 ### L5: Generate Mermaid Mindmap

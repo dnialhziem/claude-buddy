@@ -1,103 +1,66 @@
-# Learn Watcher — Setup & Reference
+# Folder Watcher — Auto-Trigger /learn
 
-The folder watcher is a background Python script that monitors `Obsidian\inbox\` and auto-triggers the `/learn` pipeline when files are dropped in.
+Background script that monitors your Obsidian inbox and auto-runs the `/learn` pipeline when files are dropped in.
 
-## Install Dependencies
+## Install Dependency
 
 ```bash
-C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe -m pip install watchdog pdfplumber python-pptx python-docx
+C:\Users\dnialhziem\AppData\Local\Python\bin\python.exe -m pip install watchdog
 ```
 
-## Watcher Script
+## Start the Watcher
 
-Save as `scripts\learn-watcher.py` in the project root:
-
-```python
-import time
-import logging
-from pathlib import Path
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-
-INBOX = Path(r"C:\Users\dnialhziem\OneDrive\Documents\Obsidian\obsidianvault\inbox")
-PROCESSED = INBOX / "processed"
-LOG_FILE = INBOX / "watcher.log"
-
-SUPPORTED = {".pdf", ".pptx", ".docx", ".txt"}
-
-logging.basicConfig(
-    filename=LOG_FILE,
-    level=logging.INFO,
-    format="%(asctime)s — %(message)s"
-)
-
-class InboxHandler(FileSystemEventHandler):
-    def on_created(self, event):
-        path = Path(event.src_path)
-
-        # Skip the processed subfolder and log file
-        if "processed" in str(path) or path.suffix == ".log":
-            return
-
-        if event.is_directory or path.suffix.lower() in SUPPORTED:
-            logging.info(f"Detected: {path.name}")
-            print(f"[learn-watcher] New item detected: {path.name}")
-            time.sleep(3)  # Wait for file to finish copying
-            self._trigger(path)
-
-    def _trigger(self, path):
-        # This prints the trigger command for Claude Code to pick up
-        # In a full integration, this would call the Claude Code CLI directly
-        print(f"[learn-watcher] Triggering /learn for: {path}")
-        logging.info(f"Triggered /learn for: {path}")
-
-        # Move to processed after trigger
-        PROCESSED.mkdir(parents=True, exist_ok=True)
-        dest = PROCESSED / path.name
-        path.rename(dest)
-        logging.info(f"Moved to processed: {dest}")
-
-if __name__ == "__main__":
-    INBOX.mkdir(parents=True, exist_ok=True)
-    observer = Observer()
-    observer.schedule(InboxHandler(), str(INBOX), recursive=False)
-    observer.start()
-    print(f"[learn-watcher] Watching: {INBOX}")
-    print("[learn-watcher] Drop files or folders into inbox/ to auto-trigger /learn")
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
+```bash
+C:\Users\dnialhziem\AppData\Local\Python\bin\python.exe scripts/learn-watcher.py
 ```
 
-## Run on Startup (Optional)
+Leave this terminal open. It runs until you press `Ctrl+C`.
 
-To have the watcher start automatically with Windows:
+## How It Works
 
-1. Press `Win + R` → type `shell:startup`
-2. Create a shortcut to this command:
-   ```
-   C:\Users\dnialhziem\AppData\Local\Programs\Python\Python312\python.exe C:\path\to\scripts\learn-watcher.py
-   ```
+1. **You drop** a `.pdf`, `.pptx`, `.docx`, `.txt`, or folder into `obsidianvault\inbox\`
+2. **Watcher detects** the new file (waits 5s for OneDrive sync to finish)
+3. **Triggers** `claude -p "/learn <filepath>"` via CLI — runs the full learning pipeline
+4. **Moves** the file to `inbox\processed\YYYY-MM-DD\` so it's not re-processed
 
 ## Inbox Folder Structure
 
 ```
 obsidianvault\inbox\
-  week3\              ← drop a folder for lecture pack mode
+  week3\              <- drop a folder for lecture pack mode
     lecture.pptx
     reading.pdf
-  notes.pdf           ← drop a single file
-  processed\          ← auto-moved here after processing
-    2026-03-28\
+  notes.pdf           <- drop a single file
+  processed\          <- auto-moved here after processing
+    2026-03-29\
       notes.pdf
 ```
 
+## Run on Startup (Optional)
+
+Create a `.bat` file in `shell:startup` (`Win+R` -> `shell:startup`):
+
+```bat
+@echo off
+start /min "" "C:\Users\dnialhziem\AppData\Local\Python\bin\python.exe" "C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\PYTHON-BUDDY\scripts\learn-watcher.py"
+```
+
+## Requirements
+
+- `watchdog` Python package
+- `claude` CLI on PATH (Claude Code installed)
+- Obsidian vault at the expected OneDrive path
+
+## Troubleshooting
+
+- **"claude CLI not found"** — Install Claude Code CLI or add it to your PATH
+- **Files not detected** — Make sure the watcher terminal is running; check `watcher.log`
+- **Timeout** — Large files or slow NotebookLM responses may hit the 5-minute timeout. Run `/learn` manually for those.
+- **OneDrive conflicts** — The 5s delay handles most sync lag. If files appear as 0 bytes, increase `time.sleep(5)` in the script
+
 ## Notes
 
-- The watcher only monitors the top level of `inbox\` (not recursive)
+- Only monitors the top level of `inbox\` (not recursive)
 - Folders are treated as lecture packs — all supported files inside are extracted
 - Unsupported file types are ignored silently
-- Check `watcher.log` if something doesn't trigger as expected
+- All activity logged to `inbox\watcher.log`

@@ -10,9 +10,10 @@ This folder contains Claude Code skills used across all projects:
 - `/python-buddy` — debug Python code with tiered solutions
 - `/skill-builder` — create and audit new skills
 - `/publish` — commit, push, sync vault skills, and keep GitHub clean after breakthroughs or new projects
-- `/linkedin` — turn any project, commit, or cert into 3 natural LinkedIn post drafts using the Scroll-Stop framework
-- `/ats-resume` — generate or audit an ATS-optimised resume; outputs Markdown + PDF via weasyprint
 - `/learn` — unified learning & research skill: brainstorm ideas, study files (PDF/PPTX/DOCX), research YouTube topics, or learn from URLs — all routes through YouTube search → NotebookLM → Obsidian vault with Mermaid mindmap
+- `/delatex` — convert LaTeX/math notation into clean readable plain text (no symbols, no markup)
+
+Career skills (ATS resume + LinkedIn) moved to private repo: https://github.com/dnialhziem/career-toolkit
 
 All session outputs are saved to the Obsidian vault at:
 `C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\`
@@ -26,10 +27,8 @@ All session outputs are saved to the Obsidian vault at:
   python-buddy/     — Python debugger (SKILL.md + error-catalogue.md + tier-guide.md)
   skill-builder/    — Skill creator and auditor (SKILL.md + reference.md)
   publish/          — GitHub publisher (SKILL.md)
-  linkedin/         — LinkedIn post generator (SKILL.md)
-  ats-resume/       — ATS resume builder + PDF exporter (SKILL.md)
   learn/            — Unified learning: brainstorm + YouTube + files + NotebookLM (SKILL.md + watcher.md)
-  notebooklm/       — NotebookLM CLI sub-skill (SKILL.md)
+  delatex/          — LaTeX to plain text converter (SKILL.md)
 ```
 
 ---

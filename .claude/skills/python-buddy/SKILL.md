@@ -1,6 +1,8 @@
 ---
 name: python-buddy
 description: Use when debugging Python code, analyzing failure mechanisms, or generating tiered logic solutions (easy, moderate, advanced).
+argument-hint: "[paste code or describe the error]"
+disable-model-invocation: true
 ---
 
 ## Supporting Files

@@ -157,10 +157,14 @@ Show the draft to the user and ask: "Does this commit message look right?"
 Once the user confirms the message:
 
 ```bash
-git add .
+# Stage specific files — never use `git add .` or `git add -A`
+# List all changed/untracked files from Step 1 and stage them individually:
+git add [file1] [file2] [file3] ...
 git commit -m "[confirmed message]"
 git push
 ```
+
+**Important:** Do NOT use `git add .` — a new sensitive file could have appeared since the scan in Step 2. Stage only the files shown and approved in Step 1.
 
 ---
 
