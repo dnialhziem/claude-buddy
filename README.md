@@ -1,65 +1,73 @@
-# Claude Buddy — AI Environment Explorer
+# Claude Buddy — AI Developer Toolkit
 
-A living workspace for understanding how AI developer tools actually work — not just using them, but building with them, breaking them, and figuring out why.
+A living workspace for building real AI-powered workflows from scratch — not just prompting, but wiring language models, automation pipelines, and knowledge systems into tools that actually do something.
 
-This isn't a finished product. It's an ongoing exploration of the AI tooling ecosystem: how language models, automation pipelines, and knowledge systems can be wired together into something genuinely useful for a developer.
+This project grows alongside my developer journey. Every skill added, every pipeline debugged, every commit is a step toward understanding how these systems work from the inside.
 
 ---
 
 ## Why I Built This
 
-Most people consume AI tools. I wanted to understand them from the inside.
+Most people use AI tools. I wanted to build with them.
 
-This project is how I do that — by building real workflows from scratch, debugging what breaks, and documenting what I learn along the way. Every skill added, every pipeline tested, every fix committed is a step toward actually understanding how these systems work rather than just prompting my way through them.
+This repo is how I do that — by creating modular Claude Code skills, automating real workflows (file sorting, learning pipelines, publishing), and connecting AI to the tools I already use (Obsidian, n8n, Google Sheets). The goal isn't to finish it — it's to keep building.
 
 ---
 
-## What It Does
+## Skills
 
-```
-YouTube → yt-dlp → NotebookLM → Obsidian vault → Claude context → repeat
-```
+Each skill is a modular command invoked inside Claude Code.
 
-Each skill is a modular command. Run one, or chain them into a pipeline.
+| Command | What it does |
+|---------|-------------|
+| `/python-buddy` | Debugs Python errors with tiered solutions (easy → advanced). Includes an error catalogue and tier guide. |
+| `/learn` | Unified learning pipeline: study PDFs/PPTX/DOCX, research YouTube topics, or brainstorm ideas — all saved to Obsidian vault with a Mermaid mindmap |
+| `/publish` | Commits, pushes, and keeps the GitHub repo clean after a breakthrough. Scans for sensitive info before staging. |
+| `/skill-builder` | Creates and audits new Claude Code skills from scratch |
+| `/delatex` | Converts LaTeX and math notation into clean readable plain text — no symbols, no markup |
 
-| Skill | Command | What it does |
-|-------|---------|-------------|
-| YouTube Search | `/youtube-search` | Searches YouTube via yt-dlp, returns top 10 results with metadata |
-| NotebookLM | `/notebooklm` | Controls NotebookLM — creates notebooks, adds sources, runs analysis |
-| YouTube Pipeline | `/youtube-pipeline` | Full pipeline: search → NotebookLM → analysis → saved to vault |
-| Python Buddy | `/python-buddy` | Debugs Python code with tiered solutions (easy/moderate/advanced) |
-| Brainstorm | `/brainstorm` | Interactive idea sessions, saved to vault for future reference |
-| Skill Builder | `/skill-builder` | Creates and audits new skills |
+---
+
+## Projects
+
+### File Sorter Agent
+*Personal — 2026*
+
+Watchdog-based agent that monitors a folder and uses a local LLM (Ollama) to classify and move files automatically. After sorting, it sends a webhook to n8n which logs the event (filename, destination, timestamp) to Google Sheets in real time.
+
+**Stack:** Python 3.14, Watchdog, Ollama, n8n, Google Sheets API
+**File:** [`file-sorter-agent.py`](file-sorter-agent.py)
 
 ---
 
 ## Architecture
 
 ```
-PYTHON-BUDDY/
+claude-buddy/
 ├── .claude/
 │   └── skills/
-│       ├── youtube-search/     # yt-dlp wrapper
-│       ├── notebooklm/         # NotebookLM CLI controller
-│       ├── youtube-pipeline/   # Search + analysis super-skill
-│       ├── python-buddy/       # Python debugger with error catalogue
-│       ├── brainstorm/         # Idea generation sessions
-│       └── skill-builder/      # Skill creator and auditor
+│       ├── python-buddy/       # Python debugger (SKILL.md + error-catalogue + tier-guide)
+│       ├── learn/              # Unified learning pipeline (SKILL.md + watcher.md)
+│       ├── publish/            # GitHub publisher (SKILL.md)
+│       ├── skill-builder/      # Skill creator and auditor (SKILL.md + reference.md)
+│       └── delatex/            # LaTeX to plain text converter (SKILL.md)
+├── file-sorter-agent.py        # Watchdog + Ollama + n8n file automation agent
 ├── CLAUDE.md                   # Project instructions loaded by Claude Code
-└── launch-claude.bat           # Opens Claude Code with vault context attached
+└── launch-claude.bat           # Opens Claude Code with Obsidian vault context
 ```
 
-Session outputs, research notes, and brainstorm summaries are saved to a separate Obsidian vault (not in this repo — personal knowledge base).
+Session outputs and research notes are saved to a private Obsidian vault (not in this repo).
 
 ---
 
 ## Stack
 
-- **Claude Code** — AI CLI that loads and executes skills
-- **yt-dlp** — YouTube metadata extraction (no downloads)
-- **notebooklm-py** — Unofficial Python CLI for NotebookLM via Playwright
-- **Obsidian** — Markdown-based knowledge base (vault)
-- **Python 3.12** — Runtime for notebooklm-py (3.14 has compatibility issues)
+- **Claude Code** — AI CLI that loads and executes skills from `.claude/skills/`
+- **Ollama** — Local LLM runtime used by the file sorter for classification
+- **Watchdog** — Python library for monitoring filesystem events
+- **n8n** — Visual workflow automation (webhook trigger → Google Sheets logging)
+- **Obsidian** — Markdown knowledge base where all session outputs are saved
+- **Python 3.14** — Primary runtime
 
 ---
 
@@ -67,63 +75,52 @@ Session outputs, research notes, and brainstorm summaries are saved to a separat
 
 ### Prerequisites
 - [Claude Code](https://claude.ai/code) installed
-- Python 3.12: `winget install Python.Python.3.12`
-- yt-dlp: `pip install yt-dlp`
-- notebooklm-py: `pip install notebooklm-py && python -m playwright install chromium`
+- Python 3.14: `winget install Python.Python.3.14`
+- Ollama: [ollama.com](https://ollama.com) — pull any model (`ollama pull llama3`)
 
 ### Install
 ```bash
-git clone https://github.com/<your-username>/claude-buddy.git
+git clone https://github.com/dnialhziem/claude-buddy.git
 cd claude-buddy
+pip install watchdog requests
 ```
 
-### Authenticate NotebookLM
+### Run File Sorter Agent
 ```bash
-C:\Users\<you>\AppData\Local\Programs\Python\Python312\python.exe -m notebooklm login
+python file-sorter-agent.py
 ```
 
-### Run
-Open Claude Code from this directory:
+### Run Claude Code with Obsidian vault
 ```bash
 claude --add-dir "path/to/your/obsidian/vault"
 ```
 
 Then invoke any skill:
 ```
-/youtube-pipeline euclidean vectors in R3
 /python-buddy
-/brainstorm
+/learn euclidean vectors
+/delatex
+/publish
 ```
-
----
-
-## Example Output
-
-Running `/youtube-pipeline euclidean vectors in R3` on 3 YouTube videos produced:
-
-- Key concepts: 2D→3D transition, vector mechanics, spatial geometry
-- CS applications: game engine projection, physics simulations, multi-dimensional arrays
-- Saved to vault: `videos/euclidean-vectors-r3-2026-03-27.md`
 
 ---
 
 ## What I Learned Building This
 
-- Claude Code's skill system uses `SKILL.md` files loaded from `.claude/skills/` — each skill is a markdown prompt with frontmatter
-- `disable-model-invocation: true` prevents expensive skills from auto-triggering
-- notebooklm-py requires Python 3.12 specifically — 3.14 breaks Playwright's browser automation
-- The `--add-dir` flag lets Claude Code load context from multiple project directories simultaneously
-- `notebooklm source add --type youtube` is the correct flag — took debugging to find this
+- Claude Code skills use `SKILL.md` files in `.claude/skills/` — each is a markdown prompt with YAML frontmatter controlling when and how it triggers
+- `disable-model-invocation: true` prevents expensive skills from auto-triggering on every message
+- n8n's webhook test URL only works when actively listening in the UI — the production URL is always on
+- Watchdog's `on_created` fires before a file write completes — added a short sleep to avoid reading partial files
+- Pylint's `W0718` (broad-exception-caught) is worth fixing — catching `requests.RequestException` instead of bare `Exception` makes failures easier to trace
 
 ---
 
 ## Roadmap
 
-- [ ] Refactor into a proper Python CLI (`buddy search`, `buddy pipeline`)
-- [ ] Add test suite for each skill
-- [ ] AWS skill — research pipeline for DVA-C02 certification prep
-- [ ] Auto-generate Obsidian graph links between related research sessions
+- [ ] AWS research skill — learning pipeline for DVA-C02 certification prep
+- [ ] File sorter: add confidence threshold so low-confidence files go to an "unsorted" review folder
+- [ ] Skill usage dashboard — track which skills are invoked most across sessions
 
 ---
 
-*Year 1, University of Melbourne — Developer track | Exploring AI tooling from the ground up*
+*Year 1, University of Melbourne — Developer track | AWS DVA-C02 target*
