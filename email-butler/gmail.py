@@ -13,7 +13,7 @@ def get_service():
     return build("gmail", "v1", credentials=creds)
 
 
-def fetch_unread_emails(count=20):
+def fetch_unread_emails(count=50):
     """Fetch unread emails from inbox. Returns list of email dicts."""
     service = get_service()
 

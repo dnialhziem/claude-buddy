@@ -119,7 +119,7 @@ def apply_correction(email_id: str, correct_label: str) -> None:
 
 def briefing() -> None:
     print("Fetching emails...\n")
-    emails = fetch_unread_emails(count=20)
+    emails = fetch_unread_emails(count=50)
 
     if not emails:
         print("No unread emails.")

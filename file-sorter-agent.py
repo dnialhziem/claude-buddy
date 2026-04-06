@@ -11,20 +11,39 @@ from watchdog.events import FileSystemEventHandler
 WATCH_FOLDER = r"C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1"
 OLLAMA_URL = "http://localhost:11434/api/chat"
 MODEL = "mistral:7b"
+LOG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_sorter_log.txt")
 
-# Folders to never move files into
+def log(msg: str):
+    line = f"{time.strftime('%H:%M:%S')} {msg}"
+    print(line)
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(line + "\n")
+
+# Folders to skip when scanning (won't descend into these)
 SKIP_FOLDERS = {"PYTHON-BUDDY"}
+
+# Specific subfolders inside SKIP_FOLDERS that ARE valid destinations
+EXTRA_FOLDERS = ["PYTHON-BUDDY/resume"]
 
 # Temp/incomplete download extensions to ignore
 IGNORE_EXTENSIONS = {".crdownload", ".part", ".tmp", ".download"}
 
+# Filename substrings → fixed destination folder (bypasses folder scan + LLM)
+FIXED_ROUTES = {
+    "resume":      "PYTHON-BUDDY/resume",
+    "cv":          "PYTHON-BUDDY/resume",
+    "coverletter": "PYTHON-BUDDY/resume",
+    "cover letter":"PYTHON-BUDDY/resume",
+    "linkedin":    "PYTHON-BUDDY/resume",
+}
+
 # Subject keywords for keyword classifier
 SUBJECT_KEYWORDS = {
-    "blaw":            ["law", "blaw", "contract", "legal", "case"],
-    "comp 10001":      ["comp", "computing", "algorithm", "code"],
-    "linearalgebra":   ["linear", "matrix", "mast", "algebra", "vector", "eigen"],
+    "blaw":            ["blaw", "contract", "legal"],
+    "comp 10001":      ["comp10001", "comp 10001", "computing", "algorithm"],
+    "linearalgebra":   ["linearalgebra", "linear algebra", "mast10007", "mast 10007", "algebra", "matrix", "vector", "eigen"],
     "python learning": ["python", "exercise", "practice"],
-    "tstw":            ["science", "scie", "tstw", "biology"],
+    "tstw":            ["tstw", "biology", "scie20005"],
 }
 
 
@@ -56,7 +75,18 @@ def get_available_folders():
         if rel_root == ".":
             continue  # skip the root itself
 
-        result.append(rel_root.replace("\\", "/"))
+        rel_posix = rel_root.replace("\\", "/")
+        if rel_posix.count("/") >= 2:
+            dirs[:] = []  # don't descend further
+            continue
+
+        result.append(rel_posix)
+
+    # Add whitelisted subfolders from inside SKIP_FOLDERS
+    for extra in EXTRA_FOLDERS:
+        full_path = os.path.join(WATCH_FOLDER, extra.replace("/", os.sep))
+        if os.path.isdir(full_path) and extra not in result:
+            result.append(extra)
 
     return sorted(result)
 
@@ -72,13 +102,40 @@ def move_file(filename: str, destination_rel: str):
     if not os.path.isfile(src):
         return f"ERROR: File '{filename}' not found."
 
-    shutil.move(src, os.path.join(dst_dir, filename))
-    notify_n8n(filename, destination_rel)
-    return f"Moved '{filename}' → {destination_rel}/"
+    # Retry up to 5 times if the file is still being written
+    for attempt in range(5):
+        try:
+            name, ext = os.path.splitext(filename)
+            dst_path = os.path.join(dst_dir, filename)
+            # If destination already exists, append a counter
+            counter = 1
+            while os.path.exists(dst_path):
+                dst_path = os.path.join(dst_dir, f"{name}_{counter}{ext}")
+                counter += 1
+            shutil.move(src, dst_path)
+            notify_n8n(filename, destination_rel)
+            moved_name = os.path.basename(dst_path)
+            return f"Moved '{filename}' -> {destination_rel}/{moved_name}"
+        except PermissionError:
+            if attempt < 4:
+                time.sleep(2)
+            else:
+                return f"ERROR: File '{filename}' locked after 5 attempts — skipped."
 
+
+UNCLASSIFIED_LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_unclassified.txt")
 
 def ask_user(filename: str, folders: list):
-    """Ask the user interactively which folder to use."""
+    """In background mode (no terminal), log the file and skip it instead of hanging on input()."""
+    import sys
+    if not sys.stdin.isatty():
+        # Running as Task Scheduler background task — no terminal available
+        with open(UNCLASSIFIED_LOG, "a", encoding="utf-8") as f:
+            f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} — could not classify: {filename}\n")
+        print(f"  No terminal — logged to _unclassified.txt and skipped.")
+        return None
+
+    # Interactive mode: ask user
     print(f"\n  Can't classify: '{filename}'")
     print("  Available folders:")
     for i, f in enumerate(folders):
@@ -91,7 +148,6 @@ def ask_user(filename: str, folders: list):
         idx = int(choice) - 1
         if 0 <= idx < len(folders):
             return folders[idx]
-    # Check if typed name matches
     for f in folders:
         if choice.lower() in f.lower():
             return f
@@ -168,7 +224,7 @@ def ask_llm(filename: str, folders: list) -> str:
             if reply_lower in folder.lower() or folder.lower() in reply_lower:
                 return folder
     except requests.RequestException as e:
-        print(f"  LLM error: {e}")
+        log(f"  LLM error: {e}")
 
     return "ask_user"
 
@@ -176,56 +232,91 @@ def ask_llm(filename: str, folders: list) -> str:
 # ── MAIN CLASSIFY + MOVE ──────────────────────────────────────────────────────
 def classify_and_move(filename: str):
     """Classify a new file and move it to the appropriate subfolder."""
-    if filename.startswith(".") or filename.startswith("~"):
+    if filename.startswith(".") or filename.startswith("~") or filename.startswith("_"):
         return
     if any(filename.endswith(ext) for ext in IGNORE_EXTENSIONS):
         return
 
+    # Check fixed routes (resume, CV, LinkedIn → always go to PYTHON-BUDDY/resume)
+    name_lower = filename.lower()
+    for kw, destination in FIXED_ROUTES.items():
+        if kw in name_lower:
+            log(f"Fixed route: '{filename}' -> {destination}/")
+            result = move_file(filename, destination)
+            log(f"  {result}")
+            return
+
     folders = get_available_folders()
     if not folders:
-        print("  No subfolders found to sort into.")
+        log("  No subfolders found to sort into.")
         return
 
-    print(f"\nNew file: '{filename}'")
+    log(f"New file: '{filename}'")
 
     # Try keyword match first (fast, free)
     folder = keyword_classify_full(filename, folders)
     if folder:
-        print(f"  Keyword match → {folder}/")
+        log(f"  Keyword match -> {folder}/")
     else:
-        print("  Asking LLM to classify...")
+        log("  Asking LLM to classify...")
         folder = ask_llm(filename, folders)
 
     if folder == "ask_user":
         folder = ask_user(filename, folders)
         if folder is None:
-            print("  Skipped.")
+            log("  Skipped.")
             return
 
     result = move_file(filename, folder)
-    print(f"  {result}")
+    log(f"  {result}")
 
 
 # ── WATCHDOG ──────────────────────────────────────────────────────────────────
 class FileSorterHandler(FileSystemEventHandler):
-    """Watchdog handler that triggers file classification on new file creation."""
+    """Watchdog handler that triggers file classification on new file creation or move."""
+
+    def _handle(self, path: str, is_directory: bool):
+        if is_directory:
+            return
+        parent = os.path.dirname(path)
+        if os.path.abspath(parent) != os.path.abspath(WATCH_FOLDER):
+            log(f"  SKIP (not root): {parent}")
+            return
+        time.sleep(2)  # wait for file to finish writing (OneDrive sync delay)
+        classify_and_move(os.path.basename(path))
 
     def on_created(self, event):
-        """Handle file creation events in the watch folder."""
-        if event.is_directory:
-            return
-        parent = os.path.dirname(event.src_path)
-        if os.path.abspath(parent) != os.path.abspath(WATCH_FOLDER):
-            return
-        time.sleep(1)  # wait for file to finish writing
-        classify_and_move(os.path.basename(event.src_path))
+        """Handle file creation (copy-paste from different drive)."""
+        log(f"EVENT created: {event.src_path}")
+        self._handle(event.src_path, event.is_directory)
+
+    def on_moved(self, event):
+        """Handle file move/rename (cut-paste on same drive lands in WATCH_FOLDER)."""
+        log(f"EVENT moved: {event.dest_path}")
+        self._handle(event.dest_path, event.is_directory)
 
 
 # ── ENTRY POINT ───────────────────────────────────────────────────────────────
+def scan_existing():
+    """Sort any loose files already in WATCH_FOLDER at startup."""
+    loose = [
+        f for f in os.listdir(WATCH_FOLDER)
+        if os.path.isfile(os.path.join(WATCH_FOLDER, f))
+    ]
+    if loose:
+        log(f"Startup scan: {len(loose)} loose file(s) found")
+        for f in loose:
+            classify_and_move(f)
+    else:
+        log("Startup scan: folder is clean")
+
+
 if __name__ == "__main__":
-    print("File Sorter Agent running (press Ctrl+C to stop)")
-    print(f"Watching: {WATCH_FOLDER}")
-    print(f"Folders detected: {get_available_folders()}\n")
+    log("File Sorter Agent started")
+    log(f"Watching: {WATCH_FOLDER}")
+    log(f"Folders: {get_available_folders()}")
+
+    scan_existing()
 
     observer = Observer()
     observer.schedule(FileSorterHandler(), WATCH_FOLDER, recursive=False)
