@@ -1,12 +1,11 @@
 """
-classifier.py — Email classification using Ollama mistral:7b
-Cleans email HTML, builds few-shot prompt, returns structured JSON score.
+classifier.py — Email classification using Ollama (batch mode)
+Cleans email HTML, classifies emails in batches to avoid per-email timeouts.
 """
 
 import json
 import logging
 import re
-import sys
 import requests
 from pathlib import Path
 from typing import Any
@@ -17,7 +16,8 @@ logger = logging.getLogger(__name__)
 
 OLLAMA_URL: str = "http://localhost:11434/api/generate"
 MODEL: str = "mistral:7b"
-TIMEOUT: int = 90
+TIMEOUT: int = 120       # per batch request
+BATCH_SIZE: int = 5      # emails per Ollama call
 
 BASE_DIR: Path = Path(__file__).resolve().parent
 PROMPTS_DIR: Path = BASE_DIR / "prompts"
@@ -67,53 +67,125 @@ def _build_prompt(subject: str, sender: str, preview: str) -> str:
     )
 
 
+FALLBACK: dict[str, Any] = {
+    "is_important": False,
+    "score": 1,
+    "category": "general",
+    "reason": "Classification failed."
+}
+
+
+def _build_batch_prompt(emails: list[dict[str, str]]) -> str:
+    """Build a single prompt that classifies multiple emails at once."""
+    system, examples = _load_prompts()
+
+    example_block = "\n\n".join(
+        f"Example {i+1}:\nInput: {e['input']}\nOutput: {json.dumps(e['output'])}"
+        for i, e in enumerate(examples[:2])  # limit examples to keep prompt short
+    )
+
+    email_block = "\n\n".join(
+        f"EMAIL_{i+1}:\nSubject: {e['subject']}\nFrom: {e['sender']}\nPreview: {e['preview']}"
+        for i, e in enumerate(emails)
+    )
+
+    return (
+        f"{system}\n\n{example_block}\n\n"
+        f"Classify each email below. Reply with ONLY a JSON array of objects in order, "
+        f"one per email, nothing else:\n\n{email_block}"
+    )
+
+
+def _parse_batch(raw: str, count: int) -> list[dict[str, Any]]:
+    match = re.search(r'\[.*\]', raw, re.DOTALL)
+    results = json.loads(match.group()) if match else json.loads(raw)
+    # Normalise categories
+    for r in results:
+        if isinstance(r.get("category"), list):
+            r["category"] = r["category"][0] if r["category"] else "general"
+    # Pad with fallbacks if model returned fewer items than expected
+    while len(results) < count:
+        results.append(dict(FALLBACK))
+    return results[:count]
+
+
+def classify_emails_batch(emails: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Classify a list of emails in batches. Returns results in the same order."""
+    results: list[dict[str, Any]] = []
+
+    for i in range(0, len(emails), BATCH_SIZE):
+        batch = emails[i:i + BATCH_SIZE]
+        items = [
+            {
+                "subject": e["subject"],
+                "sender": e["from"],
+                "preview": clean_email(e["body"]),
+            }
+            for e in batch
+        ]
+        prompt = _build_batch_prompt(items)
+        logger.info(f"Classifying emails {i+1}–{i+len(batch)} of {len(emails)}...")
+
+        try:
+            payload = {
+                "model": MODEL,
+                "prompt": prompt,
+                "stream": False,
+                "format": "json",
+                "options": {"temperature": 0.0},
+            }
+            resp = requests.post(OLLAMA_URL, json=payload, timeout=TIMEOUT)
+            resp.raise_for_status()
+            batch_results = _parse_batch(resp.json().get("response", ""), len(batch))
+            results.extend(batch_results)
+
+        except requests.exceptions.ConnectionError:
+            logger.error("Ollama not running. Start it with: ollama serve")
+            results.extend([dict(FALLBACK)] * len(batch))
+            break
+        except requests.exceptions.Timeout:
+            logger.error(f"Batch {i//BATCH_SIZE + 1} timed out — falling back to individual classification.")
+            # Try one-by-one for this batch as a last resort
+            for item in items:
+                try:
+                    single_prompt = _build_prompt(item["subject"], item["sender"], item["preview"])
+                    payload["prompt"] = single_prompt
+                    resp = requests.post(OLLAMA_URL, json=payload, timeout=TIMEOUT)
+                    match = re.search(r'\{.*\}', resp.json().get("response", ""), re.DOTALL)
+                    results.append(json.loads(match.group()) if match else dict(FALLBACK))
+                except Exception:
+                    results.append(dict(FALLBACK))
+        except (json.JSONDecodeError, AttributeError):
+            logger.error(f"Batch {i//BATCH_SIZE + 1} returned invalid JSON — skipping.")
+            results.extend([dict(FALLBACK)] * len(batch))
+
+    return results
+
+
 def classify_email(subject: str, sender: str, body: str) -> dict[str, Any]:
+    """Single-email wrapper kept for backwards compatibility."""
     preview = clean_email(body)
     prompt = _build_prompt(subject, sender, preview)
 
-    payload = {
-        "model": MODEL,
-        "prompt": prompt,
-        "stream": False,
-        "format": "json",
-        "options": {"temperature": 0.0}
-    }
-
-    fallback = {
-        "is_important": False,
-        "score": 1,
-        "category": "general",
-        "reason": "Classification failed."
-    }
-
     try:
-        response = requests.post(OLLAMA_URL, json=payload, timeout=TIMEOUT)
-        response.raise_for_status()
-        raw = response.json().get("response", "")
-
+        payload = {
+            "model": MODEL,
+            "prompt": prompt,
+            "stream": False,
+            "format": "json",
+            "options": {"temperature": 0.0},
+        }
+        resp = requests.post(OLLAMA_URL, json=payload, timeout=TIMEOUT)
+        resp.raise_for_status()
+        raw = resp.json().get("response", "")
         match = re.search(r'\{.*\}', raw, re.DOTALL)
         parsed = json.loads(match.group()) if match else json.loads(raw)
-
-        # Normalize: Ollama sometimes returns category as a list
         if isinstance(parsed.get("category"), list):
             parsed["category"] = parsed["category"][0] if parsed["category"] else "general"
-
         return parsed
-
-    except requests.exceptions.ConnectionError:
-        logger.error("Ollama connection refused. Verify service is running via: ollama serve")
-        fallback["reason"] = "Ollama unavailable."
-    except requests.exceptions.Timeout:
-        logger.error(f"Ollama inference timed out after {TIMEOUT}s.")
-        fallback["reason"] = "Inference timeout."
-    except json.JSONDecodeError:
-        logger.error("LLM generated invalid JSON structure.")
-        fallback["reason"] = "JSON parsing failure."
     except Exception as e:
-        logger.error(f"Unexpected classification error: {e}")
-        fallback["reason"] = f"System error: {str(e)}"
-
-    return fallback
+        logger.error(f"classify_email failed: {e}")
+        return dict(FALLBACK)
 
 
 if __name__ == "__main__":

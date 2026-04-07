@@ -14,21 +14,31 @@ def get_service():
 
 
 def fetch_unread_emails(count=50):
-    """Fetch unread emails from inbox. Returns list of email dicts."""
+    """Fetch unread emails from inbox, one per thread. Returns list of email dicts."""
     service = get_service()
 
-    # Get list of unread message IDs
+    # Fetch more than needed to account for thread deduplication
     result = service.users().messages().list(
         userId="me",
         labelIds=["INBOX", "UNREAD"],
-        maxResults=count
+        maxResults=count * 2
     ).execute()
 
     messages = result.get("messages", [])
-    emails = []
 
+    # Deduplicate: keep only the first (newest) message per thread
+    seen_threads = set()
+    unique_messages = []
     for msg in messages:
-        # Fetch full message details
+        tid = msg.get("threadId", msg["id"])
+        if tid not in seen_threads:
+            seen_threads.add(tid)
+            unique_messages.append(msg)
+        if len(unique_messages) >= count:
+            break
+
+    emails = []
+    for msg in unique_messages:
         full = service.users().messages().get(
             userId="me",
             id=msg["id"],
@@ -38,7 +48,6 @@ def fetch_unread_emails(count=50):
         headers = {h["name"]: h["value"]
                    for h in full["payload"]["headers"]}
 
-        # Extract body (plain text preferred, fallback to snippet)
         body = extract_body(full["payload"])
         if not body:
             body = full.get("snippet", "")
