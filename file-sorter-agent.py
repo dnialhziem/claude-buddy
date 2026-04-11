@@ -7,6 +7,12 @@ import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+try:
+    from pypdf import PdfReader
+    PDF_AVAILABLE = True
+except ImportError:
+    PDF_AVAILABLE = False
+
 # ── CONFIG ──────────────────────────────────────────────────────────────────
 WATCH_FOLDER = r"C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1"
 OLLAMA_URL = "http://localhost:11434/api/chat"
@@ -41,7 +47,7 @@ FIXED_ROUTES = {
 SUBJECT_KEYWORDS = {
     "blaw":            ["blaw", "contract", "legal"],
     "comp 10001":      ["comp10001", "comp 10001", "computing", "algorithm"],
-    "linearalgebra":   ["linearalgebra", "linear algebra", "mast10007", "mast 10007", "algebra", "matrix", "vector", "eigen"],
+    "linearalgebra":   ["linearalgebra", "linear algebra", "mast10007", "mast 10007", "mast10", "algebra", "matrix", "vector", "eigen", "s2_2026"],
     "python learning": ["python", "exercise", "practice"],
     "tstw":            ["tstw", "biology", "scie20005"],
 }
@@ -89,7 +95,6 @@ def get_available_folders():
             result.append(extra)
 
     return sorted(result)
-
 
 # ── TOOLS ────────────────────────────────────────────────────────────────────
 def move_file(filename: str, destination_rel: str):
@@ -191,13 +196,33 @@ def keyword_classify_full(filename: str, folders: list):
     return None
 
 
+# ── PDF TEXT EXTRACTOR ───────────────────────────────────────────────────────
+def extract_pdf_text(filename: str, max_chars: int = 500) -> str:
+    """Extract the first max_chars of text from a PDF file. Returns empty string on failure."""
+    if not PDF_AVAILABLE:
+        return ""
+    filepath = os.path.join(WATCH_FOLDER, filename)
+    try:
+        reader = PdfReader(filepath)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() or ""
+            if len(text) >= max_chars:
+                break
+        return text[:max_chars].strip()
+    except Exception as e:
+        log(f"  PDF read error: {e}")
+        return ""
+
+
 # ── LLM CLASSIFIER ───────────────────────────────────────────────────────────
-def ask_llm(filename: str, folders: list) -> str:
-    """Send filename to Ollama and return the best matching folder path."""
+def ask_llm(filename: str, folders: list, content: str = "") -> str:
+    """Send filename (and optional file content) to Ollama and return the best matching folder path."""
     folder_list = "\n".join(f"- {f}" for f in folders)
+    content_block = f'\n\nFile content preview:\n"""\n{content}\n"""' if content else ""
     prompt = (
         f'You are a file sorter for a Year 1 university student at the University of Melbourne.\n\n'
-        f'The student dropped a file called: "{filename}"\n\n'
+        f'The student dropped a file called: "{filename}"{content_block}\n\n'
         f'Available folders (subject/type format):\n{folder_list}\n\n'
         'Pick the MOST SPECIFIC folder that best matches this file.\n'
         'For example, if it looks like a linear algebra assignment, '
@@ -253,13 +278,22 @@ def classify_and_move(filename: str):
 
     log(f"New file: '{filename}'")
 
-    # Try keyword match first (fast, free)
+    # Try keyword match first (fast, no Ollama needed)
     folder = keyword_classify_full(filename, folders)
     if folder:
         log(f"  Keyword match -> {folder}/")
     else:
-        log("  Asking LLM to classify...")
-        folder = ask_llm(filename, folders)
+        # For PDFs, extract text content to help Ollama classify accurately
+        content = ""
+        if filename.lower().endswith(".pdf"):
+            content = extract_pdf_text(filename)
+            if content:
+                log(f"  Extracted PDF text ({len(content)} chars) — sending to LLM...")
+            else:
+                log("  PDF text extraction failed — using filename only...")
+        else:
+            log("  Asking LLM to classify...")
+        folder = ask_llm(filename, folders, content)
 
     if folder == "ask_user":
         folder = ask_user(filename, folders)

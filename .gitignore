@@ -39,5 +39,10 @@ obsidianvault/
 # Claude Code local state (not needed by others)
 .claude/settings.local.json
 
+# Career-toolkit skills (private — live in career-toolkit repo)
+.claude/skills/ats-resume/
+.claude/skills/linkedin/
+.claude/skills/job-radar/
+
 # Resume files (contain personal contact info)
 resume/

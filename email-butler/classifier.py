@@ -1,12 +1,13 @@
 """
-classifier.py — Email classification using Ollama (batch mode)
-Cleans email HTML, classifies emails in batches to avoid per-email timeouts.
+classifier.py — Email classification using Ollama (individual + parallel mode)
+Pre-filters obvious junk without hitting Ollama, then classifies remainder in parallel.
 """
 
 import json
 import logging
 import re
 import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 from bs4 import BeautifulSoup
@@ -16,8 +17,70 @@ logger = logging.getLogger(__name__)
 
 OLLAMA_URL: str = "http://localhost:11434/api/generate"
 MODEL: str = "mistral:7b"
-TIMEOUT: int = 120       # per batch request
-BATCH_SIZE: int = 5      # emails per Ollama call
+TIMEOUT: int = 120
+MAX_WORKERS: int = 3  # parallel Ollama calls
+
+# ── Pre-filter rules — instant LOW, no Ollama call ───────────────────────────
+
+# Senders whose emails are always low priority
+LOW_SENDERS = {
+    "messages-noreply@linkedin.com",       # LinkedIn suggestions/analytics (NOT message digests)
+    "jobs-listings@linkedin.com",
+    "inmail-hit-reply@linkedin.com",
+    "notifications-noreply@linkedin.com",
+    "jobalerts-noreply@linkedin.com",
+    "news-noreply@linkedin.com",
+    "hit-reply@linkedin.com",
+}
+
+# Sender domain patterns → always LOW
+LOW_SENDER_DOMAINS = [
+    "mailer.kmart.com.au",
+    "email.grab.com",
+    "mail.shopee.com.my",
+    "deals.foodpanda.com",
+    "iqiyi.com",
+    "mailer.grab.com",
+    "match.indeed.com",
+    "indeed.com",
+    "jobstreet.com",
+    "seek.com.au",
+    # linkedin.com excluded — messaging-digest-noreply@linkedin.com needs Ollama
+    "mail.anthropic.com",
+    "notifications.google.com",
+]
+
+# Subject keywords → always LOW (case-insensitive)
+LOW_SUBJECT_KEYWORDS = [
+    "unsubscribe",
+    "% off",
+    "% discount",
+    "limited time offer",
+    "don't miss out",
+    "your weekly digest",
+    "weekly newsletter",
+    "your posts got",
+    "impressions last week",
+    "hiring for barista",
+    "similar jobs in your area",
+    "your raya",
+    "buka plans",
+    "kombo jimat",
+    "antivirus protection has expired",
+]
+
+def _is_obvious_low(subject: str, sender: str) -> bool:
+    """Return True if the email can be instantly classified as LOW without Ollama."""
+    sender_lower = sender.lower()
+    subject_lower = subject.lower()
+
+    if any(addr in sender_lower for addr in LOW_SENDERS):
+        return True
+    if any(domain in sender_lower for domain in LOW_SENDER_DOMAINS):
+        return True
+    if any(kw in subject_lower for kw in LOW_SUBJECT_KEYWORDS):
+        return True
+    return False
 
 BASE_DIR: Path = Path(__file__).resolve().parent
 PROMPTS_DIR: Path = BASE_DIR / "prompts"
@@ -131,7 +194,7 @@ def classify_emails_batch(emails: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "model": MODEL,
                 "prompt": prompt,
                 "stream": False,
-                "format": "json",
+                # No "format": "json" here — Ollama constrains to object {}, but we need array []
                 "options": {"temperature": 0.0},
             }
             resp = requests.post(OLLAMA_URL, json=payload, timeout=TIMEOUT)
@@ -155,15 +218,20 @@ def classify_emails_batch(emails: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     results.append(json.loads(match.group()) if match else dict(FALLBACK))
                 except Exception:
                     results.append(dict(FALLBACK))
-        except (json.JSONDecodeError, AttributeError):
-            logger.error(f"Batch {i//BATCH_SIZE + 1} returned invalid JSON — skipping.")
+        except (json.JSONDecodeError, AttributeError) as e:
+            raw_resp = resp.json().get("response", "") if resp else ""
+            logger.error(f"Batch {i//BATCH_SIZE + 1} invalid JSON: {e}")
+            logger.error(f"Raw response was: {raw_resp[:300]!r}")
             results.extend([dict(FALLBACK)] * len(batch))
 
     return results
 
 
 def classify_email(subject: str, sender: str, body: str) -> dict[str, Any]:
-    """Single-email wrapper kept for backwards compatibility."""
+    """Classify a single email. Pre-filters obvious junk before hitting Ollama."""
+    if _is_obvious_low(subject, sender):
+        return {**FALLBACK, "reason": "Pre-filtered: automated/promotional sender or subject."}
+
     preview = clean_email(body)
     prompt = _build_prompt(subject, sender, preview)
 
@@ -182,10 +250,43 @@ def classify_email(subject: str, sender: str, body: str) -> dict[str, Any]:
         parsed = json.loads(match.group()) if match else json.loads(raw)
         if isinstance(parsed.get("category"), list):
             parsed["category"] = parsed["category"][0] if parsed["category"] else "general"
+        parsed["score"] = int(parsed.get("score", 1))
         return parsed
     except Exception as e:
         logger.error(f"classify_email failed: {e}")
         return dict(FALLBACK)
+
+
+def classify_emails_parallel(emails: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Classify emails in parallel. Pre-filters run instantly; remainder hit Ollama concurrently."""
+    results: list[dict[str, Any] | None] = [None] * len(emails)
+    to_classify: list[tuple[int, dict[str, Any]]] = []
+
+    # Pass 1: pre-filter
+    for i, email in enumerate(emails):
+        if _is_obvious_low(email["subject"], email["from"]):
+            results[i] = {**FALLBACK, "reason": "Pre-filtered: automated/promotional."}
+        else:
+            to_classify.append((i, email))
+
+    pre_count = len(emails) - len(to_classify)
+    if pre_count:
+        logger.info(f"Pre-filtered {pre_count} emails instantly.")
+    if to_classify:
+        logger.info(f"Classifying {len(to_classify)} emails via Ollama ({MAX_WORKERS} parallel)...")
+
+    # Pass 2: parallel Ollama calls for the rest
+    def _classify(idx_email: tuple[int, dict[str, Any]]) -> tuple[int, dict[str, Any]]:
+        idx, email = idx_email
+        return idx, classify_email(email["subject"], email["from"], email["body"])
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+        futures = {pool.submit(_classify, item): item[0] for item in to_classify}
+        for future in as_completed(futures):
+            idx, result = future.result()
+            results[idx] = result
+
+    return [r if r is not None else dict(FALLBACK) for r in results]
 
 
 if __name__ == "__main__":

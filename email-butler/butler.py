@@ -19,7 +19,7 @@ from typing import Any
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-from classifier import classify_email
+from classifier import classify_email, classify_emails_parallel
 from gmail import fetch_unread_emails, move_to_label
 
 BASE_DIR: Path = Path(__file__).resolve().parent
@@ -125,12 +125,11 @@ def briefing() -> None:
         print("No unread emails.")
         return
 
+    results = classify_emails_parallel(emails)
     classified = []
-    for email in emails:
-        result = classify_email(email["subject"], email["from"], email["body"])
+    for email, result in zip(emails, results):
         result["email"] = email
         classified.append(result)
-
         log_classification(
             email["id"], email["subject"], result.get("score", 1), result.get("category", "general")
         )
@@ -165,8 +164,15 @@ def briefing() -> None:
             )
 
     print(f"--- LOW PRIORITY ({len(low)} emails) ---")
+    seen_subjects: set[str] = set()
     for c in low:
-        print(f"[LOW  {c.get('score', 1)}] {c['email']['subject'][:60]}")
+        subj = c['email']['subject'][:60]
+        if subj in seen_subjects:
+            continue
+        count = sum(1 for x in low if x['email']['subject'][:60] == subj)
+        suffix = f" ({count}x)" if count > 1 else ""
+        print(f"[LOW  {c.get('score', 1)}]{suffix} {subj}")
+        seen_subjects.add(subj)
 
     print("\nRun 'python butler.py sort' to move emails into labels.")
 
@@ -200,9 +206,16 @@ def _interactive_correction(all_classified: list[dict[str, Any]]) -> None:
 
     if low:
         print(f"  [LOW] ({len(low)} emails)")
+        seen_low: set[str] = set()
         for c in low:
+            subj = c['email']['subject'][:50]
+            if subj in seen_low:
+                continue
             i = numbered.index(c) + 1
-            print(f"  {i:>2}. {c['email']['subject'][:50]}")
+            count = sum(1 for x in low if x['email']['subject'][:50] == subj)
+            suffix = f" ({count}x)" if count > 1 else ""
+            print(f"  {i:>2}.{suffix} {subj}")
+            seen_low.add(subj)
 
     print()
     while True:
@@ -234,8 +247,8 @@ def sort_inbox() -> None:
         print("No unread emails to sort.")
         return
 
-    for email in emails:
-        result = classify_email(email["subject"], email["from"], email["body"])
+    results = classify_emails_parallel(emails)
+    for email, result in zip(emails, results):
         score = result.get("score", 1)
         category = result.get("category", "general")
 

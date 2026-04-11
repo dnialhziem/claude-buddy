@@ -1,0 +1,175 @@
+02:37:20 File Sorter Agent started
+02:37:20 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+02:37:20 Folders: ['blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'linearalgebra/practical/MATLAB PRACTICAL WEEK 2', 'linearalgebra/practical/matlab week 3', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+02:37:44 File Sorter Agent started
+02:37:44 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+02:37:44 Folders: ['blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'linearalgebra/practical/MATLAB PRACTICAL WEEK 2', 'linearalgebra/practical/matlab week 3', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+02:37:46 EVENT: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\mast10007_assignment1.pdf (dir=False)
+02:37:47 New file: 'mast10007_assignment1.pdf'
+02:37:47   Keyword match -> linearalgebra/assignment/
+02:37:49   Moved 'mast10007_assignment1.pdf' -> linearalgebra/assignment/
+02:38:56 File Sorter Agent started
+02:38:56 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+02:38:56 Folders: ['blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'linearalgebra/practical/MATLAB PRACTICAL WEEK 2', 'linearalgebra/practical/matlab week 3', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+02:39:13 EVENT: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\blaw_contract_lecture.txt (dir=False)
+02:39:14 New file: 'blaw_contract_lecture.txt'
+02:39:14   Keyword match -> blaw/lecture/
+02:39:16   Moved 'blaw_contract_lecture.txt' -> blaw/lecture/
+02:40:00 EVENT: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume (3).pdf (dir=False)
+02:40:01 New file: 'resume (3).pdf'
+02:40:01   Asking LLM to classify...
+02:40:08   Moved 'resume (3).pdf' -> comp 10001/
+02:40:08 EVENT: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume_visual (1).pdf (dir=False)
+02:40:09 New file: 'resume_visual (1).pdf'
+02:40:09   Asking LLM to classify...
+02:40:12   Moved 'resume_visual (1).pdf' -> comp 10001/
+02:40:12 EVENT: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume (2).pdf (dir=False)
+02:40:13 New file: 'resume (2).pdf'
+02:40:13   Asking LLM to classify...
+02:45:40 File Sorter Agent started
+02:45:40 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+02:45:40 Folders: ['blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'linearalgebra/practical/MATLAB PRACTICAL WEEK 2', 'linearalgebra/practical/matlab week 3', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+02:45:40 Startup scan: 9 loose file(s) found
+02:45:40 New file: 'linearalgebra_week4_lecture.txt'
+02:45:40   Keyword match -> linearalgebra/lecture/
+02:45:42   Moved 'linearalgebra_week4_lecture.txt' -> linearalgebra/lecture/
+02:45:42 Skipped (never-sort): 'linkedin_draft (1).md'
+02:45:42 Skipped (never-sort): 'linkedin_draft.md'
+02:45:42 New file: 'mast10007_week3_lecture.txt'
+02:45:42   Keyword match -> linearalgebra/lecture/
+02:45:43   Moved 'mast10007_week3_lecture.txt' -> linearalgebra/lecture/
+02:45:43 Skipped (never-sort): 'resume (1).pdf'
+02:45:43 Skipped (never-sort): 'resume (2).pdf'
+02:45:43 Skipped (never-sort): 'resume.pdf'
+02:45:43 Skipped (never-sort): 'resume_visual.pdf'
+02:45:43 New file: 'test_linear_lecture.txt'
+02:45:43   Asking LLM to classify...
+02:45:49   Moved 'test_linear_lecture.txt' -> linearalgebra/lecture/
+02:47:49 File Sorter Agent started
+02:47:49 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+02:47:49 Folders: ['blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'linearalgebra/practical/MATLAB PRACTICAL WEEK 2', 'linearalgebra/practical/matlab week 3', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+02:47:49 Startup scan: 7 loose file(s) found
+02:47:49 Fixed route: 'linkedin_draft (1).md' -> PYTHON-BUDDY/resume/
+02:47:50   Moved 'linkedin_draft (1).md' -> PYTHON-BUDDY/resume/
+02:47:50 Fixed route: 'linkedin_draft.md' -> PYTHON-BUDDY/resume/
+02:47:51   Moved 'linkedin_draft.md' -> PYTHON-BUDDY/resume/
+02:47:51 Fixed route: 'resume (1).pdf' -> PYTHON-BUDDY/resume/
+02:47:52   Moved 'resume (1).pdf' -> PYTHON-BUDDY/resume/
+02:47:52 Fixed route: 'resume (2).pdf' -> PYTHON-BUDDY/resume/
+02:47:53   Moved 'resume (2).pdf' -> PYTHON-BUDDY/resume/
+02:47:53 Fixed route: 'resume.pdf' -> PYTHON-BUDDY/resume/
+02:47:53   Moved 'resume.pdf' -> PYTHON-BUDDY/resume/
+02:47:53 Fixed route: 'resume_visual.pdf' -> PYTHON-BUDDY/resume/
+02:47:54   Moved 'resume_visual.pdf' -> PYTHON-BUDDY/resume/
+02:49:11 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume (3).pdf
+02:49:11 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume (3).pdf
+02:49:12 Skipped (never-sort): 'resume (3).pdf'
+02:49:12 Fixed route: 'resume (3).pdf' -> PYTHON-BUDDY/resume/
+02:49:12 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume_visual (1).pdf
+02:49:13 Skipped (never-sort): 'resume_visual (1).pdf'
+02:49:13 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume (2).pdf
+02:49:14   Moved 'resume (3).pdf' -> PYTHON-BUDDY/resume/
+02:49:14 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume_visual (1).pdf
+02:49:14 Skipped (never-sort): 'resume (2).pdf'
+02:49:14 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume_visual.pdf
+02:49:15 Fixed route: 'resume_visual (1).pdf' -> PYTHON-BUDDY/resume/
+02:49:15 Skipped (never-sort): 'resume_visual.pdf'
+02:49:15 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\linkedin_draft (1).md
+02:49:16   Moved 'resume_visual (1).pdf' -> PYTHON-BUDDY/resume/
+02:49:16 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume (2).pdf
+02:49:16 Skipped (never-sort): 'linkedin_draft (1).md'
+02:49:16 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume (1).pdf
+02:49:17 Fixed route: 'resume (2).pdf' -> PYTHON-BUDDY/resume/
+02:49:17 Skipped (never-sort): 'resume (1).pdf'
+02:49:17 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\linkedin_draft.md
+02:49:18   Moved 'resume (2).pdf' -> PYTHON-BUDDY/resume/
+02:49:18 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume_visual.pdf
+02:49:18 Skipped (never-sort): 'linkedin_draft.md'
+02:49:18 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume.pdf
+02:49:19 Fixed route: 'resume_visual.pdf' -> PYTHON-BUDDY/resume/
+02:49:19 Skipped (never-sort): 'resume.pdf'
+02:49:19 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\_unclassified.txt
+02:49:20   Moved 'resume_visual.pdf' -> PYTHON-BUDDY/resume/
+02:49:20 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\linkedin_draft (1).md
+02:49:21 Fixed route: 'linkedin_draft (1).md' -> PYTHON-BUDDY/resume/
+02:49:22   Moved 'linkedin_draft (1).md' -> PYTHON-BUDDY/resume/
+02:49:22 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume (1).pdf
+02:49:23 Fixed route: 'resume (1).pdf' -> PYTHON-BUDDY/resume/
+02:49:24   Moved 'resume (1).pdf' -> PYTHON-BUDDY/resume/
+02:49:24 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\linkedin_draft.md
+02:49:27   Moved 'linkedin_draft.md' -> PYTHON-BUDDY/resume/
+02:49:27 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume.pdf
+02:49:28 Fixed route: 'resume.pdf' -> PYTHON-BUDDY/resume/
+02:49:29   Moved 'resume.pdf' -> PYTHON-BUDDY/resume/
+02:49:29 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\_unclassified.txt
+02:55:14 File Sorter Agent started
+02:55:14 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+02:55:14 Folders: ['blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'linearalgebra/practical/MATLAB PRACTICAL WEEK 2', 'linearalgebra/practical/matlab week 3', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+02:55:14 Startup scan: 1 loose file(s) found
+02:58:49 File Sorter Agent started
+02:58:49 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+02:58:49 Folders: ['PYTHON-BUDDY/resume', 'blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'linearalgebra/practical/MATLAB PRACTICAL WEEK 2', 'linearalgebra/practical/matlab week 3', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+02:58:49 Startup scan: 1 loose file(s) found
+02:59:59 File Sorter Agent started
+02:59:59 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+02:59:59 Folders: ['PYTHON-BUDDY/resume', 'blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+02:59:59 Startup scan: 1 loose file(s) found
+17:39:20 File Sorter Agent started
+17:39:20 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+17:39:20 Folders: ['PYTHON-BUDDY/resume', 'blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+17:39:20 Startup scan: 1 loose file(s) found
+17:41:25 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume.pdf
+17:41:25 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume.pdf
+17:41:26 Fixed route: 'resume.pdf' -> PYTHON-BUDDY/resume/
+17:41:26 Fixed route: 'resume.pdf' -> PYTHON-BUDDY/resume/
+17:41:28   Moved 'resume.pdf' -> PYTHON-BUDDY/resume/
+17:41:28 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\linkedin_draft.md
+17:41:29 Fixed route: 'linkedin_draft.md' -> PYTHON-BUDDY/resume/
+17:41:29   Moved 'linkedin_draft.md' -> PYTHON-BUDDY/resume/
+17:41:30 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\DANIAL's RESUME (1).pdf
+17:41:31 Fixed route: 'DANIAL's RESUME (1).pdf' -> PYTHON-BUDDY/resume/
+17:41:32   Moved 'DANIAL's RESUME (1).pdf' -> PYTHON-BUDDY/resume/
+17:56:57 File Sorter Agent started
+17:56:57 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+17:56:57 Folders: ['PYTHON-BUDDY/resume', 'blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+17:56:57 Startup scan: 1 loose file(s) found
+18:59:05 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume_visual.pdf
+18:59:31 Fixed route: 'resume_visual.pdf' -> PYTHON-BUDDY/resume/
+18:59:32   Moved 'resume_visual.pdf' -> PYTHON-BUDDY/resume/resume_visual.pdf
+18:59:32 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume.pdf
+18:59:34 Fixed route: 'resume.pdf' -> PYTHON-BUDDY/resume/
+18:59:35   Moved 'resume.pdf' -> PYTHON-BUDDY/resume/resume.pdf
+00:41:45 File Sorter Agent started
+00:41:45 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+00:41:45 Folders: ['PYTHON-BUDDY/resume', 'blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+00:41:45 Startup scan: 3 loose file(s) found
+00:41:45 Fixed route: 'resume.pdf' -> PYTHON-BUDDY/resume/
+00:41:46   Moved 'resume.pdf' -> PYTHON-BUDDY/resume/resume.pdf
+00:41:46 Fixed route: 'resume_visual.pdf' -> PYTHON-BUDDY/resume/
+00:41:48   Moved 'resume_visual.pdf' -> PYTHON-BUDDY/resume/resume_visual.pdf
+01:32:55 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume_visual.pdf
+01:32:57 Fixed route: 'resume_visual.pdf' -> PYTHON-BUDDY/resume/
+01:32:58   Moved 'resume_visual.pdf' -> PYTHON-BUDDY/resume/resume_visual.pdf
+01:32:58 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\resume.pdf
+01:33:00 Fixed route: 'resume.pdf' -> PYTHON-BUDDY/resume/
+01:33:01   Moved 'resume.pdf' -> PYTHON-BUDDY/resume/resume.pdf
+03:21:48 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\assig2_S2_2026.pdf
+03:21:50 New file: 'assig2_S2_2026.pdf'
+03:21:50   Asking LLM to classify...
+03:21:58   Moved 'assig2_S2_2026.pdf' -> comp 10001/assignment/assig2_S2_2026.pdf
+03:25:06 File Sorter Agent started
+03:25:06 Watching: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1
+03:25:06 Folders: ['PYTHON-BUDDY/resume', 'blaw', 'blaw/assignment', 'blaw/lecture', 'blaw/workshops', 'comp 10001', 'comp 10001/assignment', 'comp 10001/lecture', 'comp 10001/practical', 'comp 10001/projects', 'linearalgebra', 'linearalgebra/assignment', 'linearalgebra/lecture', 'linearalgebra/practical', 'python learning', 'tstw', 'tstw/assignment', 'tstw/lecture', 'tstw/practical']
+03:25:06 Startup scan: 1 loose file(s) found
+03:25:27 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\assig2_S2_2026.pdf
+03:25:29 New file: 'assig2_S2_2026.pdf'
+03:25:29   Keyword match -> linearalgebra/assignment/
+03:25:31   Moved 'assig2_S2_2026.pdf' -> linearalgebra/assignment/assig2_S2_2026.pdf
+04:34:55 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\assig2_S2_2026-COMPLETED_260410_043438.pdf
+04:34:57 New file: 'assig2_S2_2026-COMPLETED_260410_043438.pdf'
+04:34:57   Keyword match -> linearalgebra/assignment/
+04:34:59   Moved 'assig2_S2_2026-COMPLETED_260410_043438.pdf' -> linearalgebra/assignment/assig2_S2_2026-COMPLETED_260410_043438.pdf
+04:34:59 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\assig2_S2_2026-COMPLETED_260410_043438.pdf
+04:35:01 New file: 'assig2_S2_2026-COMPLETED_260410_043438.pdf'
+04:35:01   Keyword match -> linearalgebra/assignment/
+04:35:01   ERROR: File 'assig2_S2_2026-COMPLETED_260410_043438.pdf' not found.

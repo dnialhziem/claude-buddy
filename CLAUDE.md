@@ -12,6 +12,9 @@ This folder contains Claude Code skills used across all projects:
 - `/publish` — commit, push, sync vault skills, and keep GitHub clean after breakthroughs or new projects
 - `/learn` — unified learning & research skill: brainstorm ideas, study files (PDF/PPTX/DOCX), research YouTube topics, or learn from URLs — all routes through YouTube search → NotebookLM → Obsidian vault with Mermaid mindmap
 - `/delatex` — convert LaTeX/math notation into clean readable plain text (no symbols, no markup)
+- `/butler` — run email briefing, sort inbox, audit classifications, or view receipt logs
+- `/daily` — morning freelance briefing: fresh Airtasker gigs, job radar refresh, follow-ups due, upcoming deadlines
+- `/interview-review` — walk through interview prep questions one by one, save your answers back to Obsidian
 
 All session outputs are saved to the Obsidian vault at:
 `C:\Users\<your-username>\OneDrive\Documents\Obsidian\obsidianvault\`
@@ -27,6 +30,8 @@ All session outputs are saved to the Obsidian vault at:
   publish/          — GitHub publisher (SKILL.md)
   learn/            — Unified learning: brainstorm + YouTube + files + NotebookLM (SKILL.md + watcher.md)
   delatex/          — LaTeX to plain text converter (SKILL.md)
+  butler/           — Email butler wrapper (SKILL.md)
+  daily/            — Morning freelance briefing (SKILL.md)
 ```
 
 ---
