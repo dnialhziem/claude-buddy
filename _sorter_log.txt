@@ -173,3 +173,12 @@
 04:35:01 New file: 'assig2_S2_2026-COMPLETED_260410_043438.pdf'
 04:35:01   Keyword match -> linearalgebra/assignment/
 04:35:01   ERROR: File 'assig2_S2_2026-COMPLETED_260410_043438.pdf' not found.
+20:33:35 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\VenueExam-MAST10007-23-Feb1.pdf
+20:33:37 New file: 'VenueExam-MAST10007-23-Feb1.pdf'
+20:33:37   Keyword match -> linearalgebra/
+20:33:39   Moved 'VenueExam-MAST10007-23-Feb1.pdf' -> linearalgebra/VenueExam-MAST10007-23-Feb1.pdf
+20:33:42 EVENT created: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\Report 1 - Understanding climate change - submission.pdf
+20:33:44 New file: 'Report 1 - Understanding climate change - submission.pdf'
+20:33:44   PDF text extraction failed — using filename only...
+20:33:52   Moved 'Report 1 - Understanding climate change - submission.pdf' -> comp 10001/projects/Report 1 - Understanding climate change - submission.pdf
+20:35:44 EVENT moved: C:\Users\dnialhziem\OneDrive - The University of Melbourne\unimelb\year1\scie10005

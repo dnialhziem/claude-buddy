@@ -49,7 +49,7 @@ SUBJECT_KEYWORDS = {
     "comp 10001":      ["comp10001", "comp 10001", "computing", "algorithm"],
     "linearalgebra":   ["linearalgebra", "linear algebra", "mast10007", "mast 10007", "mast10", "algebra", "matrix", "vector", "eigen", "s2_2026"],
     "python learning": ["python", "exercise", "practice"],
-    "tstw":            ["tstw", "biology", "scie20005"],
+    "scie10005":       ["scie10005", "scie 10005", "tstw", "biology", "climate", "understanding climate"],
 }
 
 
